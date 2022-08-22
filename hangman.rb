@@ -2,30 +2,31 @@ require 'io/console'
 ## Game prep
 # get array of words from file
 wordsFile = IO.readlines("words.txt")
-rando = rand(1..wordsFile.length())
+# rando = rand(1..wordsFile.length()) # .sample method
 if wordsFile
-  visible_word = wordsFile[rando].chomp
+  visible_word = wordsFile.sample()
 else
   puts "Error"
 end
 
 # put the visible word in an array
-visible_word_array = visible_word.split('')
+visible_word_array = visible_word.chomp.split('')
+puts visible_word_array.length()
 # create the hidden word
 hidden_word_array = visible_word_array.map { |c| c = '*'}
 guesses = []
-lives = 3
-
+errors = 0
+LIVES = 9
+rounds = 1
 # game welcome
 puts "-" * IO.console.winsize[1]
 puts "Welcome to Hangman. Your word is #{hidden_word_array.join('')}"
-puts "-" * IO.console.winsize[1]
-puts "You have #{lives} lives"
 
 # game loop
-while guesses.length() < lives
+while errors < LIVES
   puts "-" * IO.console.winsize[1]
-  puts "Round #{guesses.length() + 1} of #{lives}"
+  puts "Round #{rounds}"
+  puts "Lives left: #{LIVES - errors}"
   puts "-" * IO.console.winsize[1]
   puts "Guess a letter"
   puts "-" * IO.console.winsize[1]
@@ -36,28 +37,30 @@ while guesses.length() < lives
     puts "Invalid guess."
   else
     guesses.append(guess)
-  end
+    rounds += 1
 
-  # check if letter is in word
-  if visible_word_array.include?(guess)
-    # replace the letter at that index of the blocked out word
-    visible_word_array.map.with_index {|x, i| 
+    # check if letter is in word
+    if visible_word_array.include?(guess)
+      # replace the letter at that index of the blocked out word
+      visible_word_array.map.with_index {|x, i|
       if x == guess
         hidden_word_array[i] = guess
       end
     }
-    # break if all letters have been found
-    if !hidden_word_array.include?('*')
-      puts "Congrats - the word is #{visible_word_array.join('')}"
-      break
+      # break if all letters have been found
+      if !hidden_word_array.include?('*') # try ruby arry subtraction magic
+        puts "Congrats - the word is #{visible_word_array.join('')}"
+        break
+      end
+    else
+      errors += 1
+      puts 'Sorry, try again.'
+      puts "-" * IO.console.winsize[1]
     end
-
-  else
-    puts 'Sorry, try again.'
   end
 
   # end game when lives have run out
-  if guesses.length() >= lives
+  if errors >= LIVES
     puts "Sorry, you lost :(\nThe answer was '#{visible_word_array.join('')}'"
   else
     puts "The word is #{hidden_word_array.join('')}"
