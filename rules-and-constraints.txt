@@ -1,0 +1,20 @@
+Rules
+User can start a game by running the program
+The user has 9 lives
+Computer secretly picks a word for the user to guess
+The user is shown the word, but all the letters are replaced with a non letter character
+User takes turns to guess letters in the word
+If the letter is not in the word the user loses a life
+After each turn the user is shown the word again. The letters they have guessed successfully are revealed, and the unguessed are replaced with a non letter character
+If the user runs out of lives the game is lost and the word is fully revealed
+If the user guesses all the letters correctly the game is won
+
+Constraints (MVP Edition)
+MINIMUM VIABLE PRODUCT: This should be your first full “working” version of the game. You should aim to get here as quickly as possible. You should be able to present your minimum viable hangman game implementation for review (recommend creating a commit called “MVP” when you achieve this). After getting this working (provided you have saved it with a commit) you can carry on with making things better / implementing things.
+The rules are a very basic view of the game. There are additional features that will help the game be more playable (for example showing the player how many lives they have remaining after every turn, or filtering bad words out of the word list). Feel free to implement these features, but do not go too far beyond the scope outlined in the rules. Everything in the rules should be covered off before attempting these nice-to-have features.
+Stick to simple text input and output for the interface
+Code should live in a single file
+Do not create any methods
+Do not use gems
+You can use standard libraries / modules
+Do not create tests
