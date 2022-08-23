@@ -4,7 +4,7 @@ require './view'
 class Game
 
   def initialize
-    @state = Model.new(4)
+    @state = Model.new(9)
     @view = View.new
     run_game
   end
