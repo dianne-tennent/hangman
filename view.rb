@@ -2,47 +2,56 @@ require 'io/console'
 
 class View
 
-  def game_intro(hidden_word_array)
+  def game_intro(hidden_word_array, rounds, errors, lives)
     # game welcome
     puts "-" * IO.console.winsize[1]
-    puts "Welcome to Hangman. Your word is #{hidden_word_array.join('')}"
+    puts "Welcome to Hangman."
     puts "-" * IO.console.winsize[1]
+
+  end
+
+  def status_update(lives, errors, rounds, hidden_word_array)
+    puts "Lives left: #{lives - errors}"
     puts "Round #{rounds}"
-    puts "Lives left: #{LIVES - errors}"
+    puts "Your word is #{hidden_word_array.join('')}"
     puts "-" * IO.console.winsize[1]
     puts "Guess a letter"
     puts "-" * IO.console.winsize[1]
   end
 
-  def get_guess()
-    guess = gets.chomp.downcase
-    # add guess to guesses array if it's a valid guess
-    if guesses.include?(guess) || guess.length() != 1 || !guess.match?(/[a-z]/)
-      puts "Invalid guess."
-    else
-      return guess
-    end
-  end
-
-  def check_guess()
-    # check if letter is in word
-    if visible_word_array.include?(guess)
-      # replace the letter at that index of the blocked out word
-      visible_word_array.map.with_index {|x, i|
-      if x == guess
-        hidden_word_array[i] = guess
+  def get_guess(guesses)
+    valid = false
+    while valid == false
+      guess = gets.chomp.downcase
+      # add guess to guesses array if it's a valid guess
+      if guesses.include?(guess) || guess.length() != 1 || !guess.match?(/[a-z]/)
+        puts "Invalid guess, try again."
+      else
+        guesses.append(guess)
+        valid = true
       end
-    }
-    else
-      return
+    end
+    return guess
   end
 
-  def win_message()
+  def success_message
+    puts "Good guess."
+    puts "-" * IO.console.winsize[1]
+  end
+
+  def fail_message
+    puts 'Sorry, the word doesn\'t contain that letter.'
+    puts "-" * IO.console.winsize[1]
+  end
+
+
+  def win_message(hidden_word_array)
     puts "Congrats - you won."
+    puts "The word is #{hidden_word_array.join('')}"
   end
 
-  def lose_message()
-    puts "Sorry, you lost :("
+  def lose_message(visible_word_array)
+    puts "You lost :(\nThe answer was '#{visible_word_array.join('')}'"
   end
 
 end
