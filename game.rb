@@ -13,7 +13,6 @@ class Game
     @state = HangmanModel.new
     @view.game_intro
     while @state.game_in_progress?
-      puts "in progress? #{@state.game_in_progress?}"
       # could make helper method that includes both above conditions in a postive
       hidden = @state.word_array.map{ |x| !@state.guesses.include?(x) ? '*' : x } # use controller to convert remaining letters to nils, and then view converts to '*'
       @view.status_update(@state.lives, @state.number_of_errors, @state.guesses.length() + 1, hidden.join(''))
