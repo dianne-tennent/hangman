@@ -1,5 +1,5 @@
 class HangmanModel
-  attr_accessor :lives, :guesses, :word_array, :word, :game_in_progress, :word_found
+  attr_accessor :lives, :guesses, :word_array, :word, :game_in_progress, :word_found, :hidden_word
 
   def initialize()
     @lives = 9
@@ -40,4 +40,14 @@ class HangmanModel
     # guesses that are not in the word
     @guesses.count { |x| !@word_array.include?(x)} #ruby array.count method
   end
+
+  def hidden_word
+    hidden = @word_array.map{ |x| !@guesses.include?(x) ? '*' : x }
+    hidden.join('')
+  end
+
+  def store_guess(guess) # Moved here from controller: "red flag because you're modifying another class' instance variable, makes it more exposed and hard to manage. Better to expose the methods that modify them. Protect from other classes as much as possible."
+    @guesses << guess
+  end
+
 end

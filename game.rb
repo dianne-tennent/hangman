@@ -13,14 +13,13 @@ class Game
     @state = HangmanModel.new
     @view.game_intro
     while @state.game_in_progress?
-      # could make helper method that includes both above conditions in a postive
-      hidden = @state.word_array.map{ |x| !@state.guesses.include?(x) ? '*' : x } # use controller to convert remaining letters to nils, and then view converts to '*'
-      @view.status_update(@state.lives, @state.number_of_errors, @state.guesses.length() + 1, hidden.join(''))
+       # use controller to convert remaining letters to nils, and then view converts to '*'
+      @view.status_update(@state.lives, @state.number_of_errors, @state.guesses.length() + 1, @state.hidden_word)
       guess = ''
       until valid_guess?(guess, @state.guesses) # this is good
         guess = @view.get_guess
       end
-      store_guess(guess)
+      @state.store_guess(guess)
       evaluate_guess(guess)
     end
     play_again?
@@ -46,10 +45,6 @@ class Game
     else
       @view.fail_message
     end
-  end
-
-  def store_guess(guess) # red flag because you're modifying another class' instance variable, makes it more exposed and hard to manage. Better to expose the methods that modify them. Protect from other classes as much as possible.
-    @state.guesses << guess
   end
 
 end
